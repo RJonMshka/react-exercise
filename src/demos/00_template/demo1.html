@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>React - Template</title>
+    <script src="../../js/react.min.js"></script>
+    <script src="../../js/react-dom.min.js"></script>
+    <script src="../../js/browser.min.js"></script>
+
+    <style>
+
+        #example5 {
+            border: 1px solid blue;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="container"></div>
+    <div id="example1"></div>
+    <div id="example2"></div>
+    <div id="example3"></div>
+    <div id="example4"></div>
+    <div id="example5"></div>
+
+    <div id="movie1"></div>
+    <div id="movie2"></div>
+
+    <script type="text/babel">
+
+    var Bacon = React.createClass({
+        render: function() {
+            return <h2>Googler</h2>
+        }
+    });
+
+    class Hello extends React.Component {
+        render(){return <h1>Hello</h1>}
+    }
+
+    var Bassin = () => <h1>Gibby</h1>;
+
+    // Make Sure the Variable starts with Uppercase
+    var MultiComp = () => 
+
+    // Binding multiple elements into a single DIV
+    <div>
+        <h1>Something Nat.</h1>
+        <p>Below earth level, there is binary</p>
+    </div>
+
+    class Movie extends React.Component {
+        render() {
+            return (
+                <div>
+                    <h1>{this.props.title}</h1>
+                    <h2>{this.props.genre}</h2>
+                </div>
+            )
+        }
+    }
+
+        ReactDOM.render(
+            <h1>Gangnum</h1>,
+            document.getElementById('container')
+        );
+
+        ReactDOM.render (
+            <Bacon/>,
+            document.getElementById('example1')
+        );
+
+        ReactDOM.render (
+            <Hello/>,
+            document.getElementById('example2')
+        );
+
+        ReactDOM.render (
+            <Bassin/>,
+            document.getElementById('example3')
+        );
+
+        ReactDOM.render (
+            <MultiComp/>,
+            document.getElementById('example4')
+        );
+
+        // Only Single DIV
+        ReactDOM.render (
+            <div>
+                <MultiComp/>
+                <MultiComp/>
+                <MultiComp/>
+                <MultiComp/>
+            </div>
+            ,
+            document.getElementById('example5')
+        );
+        
+        ReactDOM.render (
+            <Movie title="Avatar" genre="Adventure, Action"/>,
+            document.getElementById('movie1')
+        );
+
+        ReactDOM.render (
+            <Movie title="Paraphase" genre="Mystery, Action"/>,
+            document.getElementById('movie2')
+        );
+
+    </script>
+
+</body>
+</html>
