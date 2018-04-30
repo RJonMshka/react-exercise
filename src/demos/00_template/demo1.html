@@ -29,6 +29,15 @@
     <div id="movie1"></div>
     <div id="movie2"></div>
 
+    <!-- 2 Movie components in a single div -->
+    <div id="movie3"></div>
+
+    <!-- Button and OnClicks -->
+    <div id="ex6"></div>
+
+    <!-- Checkbox State -->
+    <div id="checkbox"></div>
+
     <script type="text/babel">
 
     var Bacon = React.createClass({
@@ -63,6 +72,186 @@
         }
     }
 
+    class Comment extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = this.getInitialState();
+            // this.edit = this.edit.bind(this);
+            // this.save = this.save.bind(this);
+            // this.remove = this.remove.bind(this);
+        }
+
+        getInitialState () {
+            return {editing: false}
+        }
+
+        edit() {
+            this.setState({editing: true});
+        }
+
+        save() {
+            let val = this.refs.newText.value;
+            this.props.updateText(val , this.props.index);
+            console.log('new comment is: ' + val);
+            this.setState({editing: false});
+        }
+
+        remove() {
+            console.log('Removing Comment..');
+            this.props.deleteComment(this.props.index);
+        }
+
+        renderNormal() {
+            return (
+                <div>
+                    <div>{this.props.children}</div>
+                    <button onClick={() => this.edit()}>Edit</button>
+                    <button onClick={() => this.remove()}>Remove</button>
+                </div>
+            )
+        }
+
+        renderForm() {
+            return (
+                <div>
+                    <textarea ref="newText" defaultValue = {this.props.children}></textarea>
+                    <button onClick={() => this.save()}>Save</button>
+                </div>
+            )
+        }
+
+        render() {
+            if (this.state.editing) {
+                return this.renderForm();
+            } else {
+                return this.renderNormal();
+            }
+        }
+    }
+
+    class Board extends React.Component {
+        constructor (props) {
+            super (props);
+            this.state = this.getInitialState();
+
+            this.removeComment = this.removeComment.bind(this);
+            this.updateComment = this.updateComment.bind(this);
+            this.eachItem = this.eachItem.bind(this);
+            this.addNew = this.addNew.bind(this);
+        }
+
+        getInitialState () {
+            return {
+                comments: [
+                    'This is Sparta',
+                    'Kung fu Panda',
+                    'samurai warrior',
+                    'AJ built this house'
+                ]
+            }
+        }
+
+        addNew (text) {
+            let arr = this.state.comments;
+            arr.push(text);
+            this.setState({comments: arr});
+            console.log('added new item');
+        }
+
+        removeComment (i) {
+            console.log('removing component '+i);
+            let arr = this.state.comments;
+            arr.splice(i , 1);
+            this.setState({comments : arr});
+        }
+
+        updateComment (newText , i) {
+            console.log(' Updating Component');
+            let arr = this.state.comments;
+            arr[i] = newText;
+            this.setState({comments : arr});
+        }
+
+        eachItem(text , i) {
+            return (
+                <Comment key={i} index={i} deleteComment = {this.removeComment} updateText = {this.updateComment}>
+                    {text}
+                </Comment>
+                )
+        }
+
+        render () {
+            return (
+                <div>
+                    <button onClick={this.addNew.bind(null , 'default text')}>Add New</button>
+                    { this.state.comments.map( this.eachItem ) }
+                </div>
+                )
+        }
+    }
+
+    class CheckBox extends React.Component {
+        constructor(props){
+            super(props);
+            // I don't know , why we have to write this, Isn't react supposed to do that automatically
+            // Correction:: We have write it like this in class creation if this type
+            // Whole constructor thing not at all needed in case of React.createClass
+            this.state = this.getInitialState();
+
+            // Important to bind this to handleChange method
+            // In case of React.createClass we dont have to do this
+            this.handleChange = this.handleChange.bind(this);
+        }
+        getInitialState () {
+            return {checked : true}
+        }
+
+        handleChange () {
+            this.setState({checked: !this.state.checked})
+        }
+
+        render () {
+            let msg;
+            if (this.state.checked) 
+                msg = 'checked';
+            else
+                msg = 'unchecked';
+
+            return (
+                <div>
+                    <input type="checkbox" onChange={this.handleChange} defaultChecked= {this.state.checked} />
+                    <h2>Checkbox is {msg}</h2>
+                </div>
+            )
+        }
+    }
+
+    // OR we can do the above code
+    // var CheckBox = React.createClass({
+    //     getInitialState: function() {
+    //         return {checked : true}
+    //     },
+
+    //     handleChange: function() {
+    //         this.setState({checked: !this.state.checked})
+    //     },
+
+    //     render: function() {
+    //         let msg;
+    //         if (this.state.checked) 
+    //             msg = 'checked';
+    //         else
+    //             msg = 'unchecked';
+
+    //         return (
+    //             <div>
+    //                 <input type="checkbox" onChange={this.handleChange} defaultChecked= {this.state.checked} />
+    //                 <h2>Checkbox is {msg}</h2>
+    //             </div>
+    //         )
+    //     }
+    // })
+
         ReactDOM.render(
             <h1>Gangnum</h1>,
             document.getElementById('container')
@@ -95,8 +284,7 @@
                 <MultiComp/>
                 <MultiComp/>
                 <MultiComp/>
-            </div>
-            ,
+            </div>,
             document.getElementById('example5')
         );
         
@@ -109,6 +297,26 @@
             <Movie title="Paraphase" genre="Mystery, Action"/>,
             document.getElementById('movie2')
         );
+
+        // Together in a single DIV
+        ReactDOM.render (
+            <div>
+                <Movie title="Avatar" genre="Adventure, Action"/>
+                <Movie title="Paraphase" genre="Mystery, Action"/>
+            </div>,
+            document.getElementById('movie3')
+        )
+
+        ReactDOM.render (
+            <Board />
+            ,
+            document.getElementById('ex6')
+        )
+
+        ReactDOM.render (
+            <CheckBox />,
+            document.getElementById('checkbox')
+        )
 
     </script>
 
